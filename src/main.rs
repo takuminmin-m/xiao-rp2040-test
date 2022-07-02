@@ -54,14 +54,25 @@ fn main() -> ! {
         &mut pac.RESETS,
     );
 
-    let mut led_pin = pins.led.into_push_pull_output();
+    let mut led_r_pin = pins.gpio17.into_push_pull_output();
+    let mut led_g_pin = pins.gpio16.into_push_pull_output();
+    let mut led_b_pin = pins.led.into_push_pull_output();
+
+    led_r_pin.set_high().unwrap();
+    led_g_pin.set_high().unwrap();
+    led_b_pin.set_high().unwrap();
+
+    delay.delay_ms(1000);
 
     loop {
-        info!("on!");
-        led_pin.set_high().unwrap();
+        led_b_pin.set_high().unwrap();
+        led_r_pin.set_low().unwrap();
         delay.delay_ms(500);
-        info!("off!");
-        led_pin.set_low().unwrap();
+        led_r_pin.set_high().unwrap();
+        led_g_pin.set_low().unwrap();
+        delay.delay_ms(500);
+        led_g_pin.set_high().unwrap();
+        led_b_pin.set_low().unwrap();
         delay.delay_ms(500);
     }
 }
